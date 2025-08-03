@@ -315,9 +315,31 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/contact" element={<Contact />} />
+        <Route 
+          path="/contact" 
+          element={
+            <Contact 
+              translations={translations}
+              currentLang={currentLang}
+              setCurrentLang={setCurrentLang}
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+            />
+          } 
+        />
         <Route path="/solutions" element={<SolutionsPage />} />
-        <Route path="/innovation" element={<Innovation t={t} />} />
+        <Route 
+          path="/innovation" 
+          element={
+            <Innovation 
+              translations={translations}
+              currentLang={currentLang}
+              setCurrentLang={setCurrentLang}
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+            />
+          } 
+        />
         <Route path="/admin/api-test" element={<ApiTest />} />
         <Route path="*" element={<MainContent />} />
       </Routes>

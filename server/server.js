@@ -97,6 +97,24 @@ app.use((req, res, next) => {
   next();
 });
 
+// Handle favicon.ico requests
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end(); // Return 204 No Content
+});
+
+// Root API endpoint
+app.get('/api', (req, res) => {
+  res.json({
+    message: 'API is running',
+    endpoints: [
+      'GET /api/health',
+      'GET /api/users',
+      'POST /api/contact',
+      'POST /api/orders'
+    ]
+  });
+});
+
 // API Routes
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

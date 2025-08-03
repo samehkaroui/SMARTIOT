@@ -1,49 +1,132 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Leaf, Droplets, CloudRain, Wifi, Settings } from 'lucide-react';
+import { ArrowRight, Droplets, CloudRain, Wifi, Settings, Leaf } from 'lucide-react';
+import Header from './Header';
 
 const SolutionsPage = () => {
-  const [isMounted, setIsMounted] = useState(false);
-  const navigate = useNavigate();
+  const [currentLang, setCurrentLang] = useState<'en' | 'fr' | 'ar'>('en');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
     window.scrollTo(0, 0);
   }, []);
 
-  const solutions = [
-    {
-      icon: <Droplets className="w-8 h-8 text-green-400" />,
-      title: "Smart Irrigation Systems",
-      description: "Automated watering solutions that adjust based on soil moisture levels and weather forecasts, reducing water usage by up to 40%."
+  // Translations
+  const translations = {
+    en: {
+      nav: {
+        home: 'Home',
+        about: 'About',
+        solutions: 'Solutions',
+        products: 'Products',
+        services: 'Services',
+        industries: 'Industries',
+        innovation: 'Innovation',
+        contact: 'Contact'
+      },
+      solutions: {
+        title: 'Our Smart Solutions',
+        subtitle: 'Innovative IoT solutions for modern agriculture',
+        solutions: [
+          {
+            title: 'Smart Irrigation Systems',
+            description: 'Automated watering solutions that adjust based on soil moisture levels and weather forecasts, reducing water usage by up to 40%.'
+          },
+          {
+            title: 'Weather Monitoring',
+            description: 'Real-time weather tracking and predictive analytics to optimize farming operations and protect crops from adverse conditions.'
+          },
+          {
+            title: 'IoT Sensors Network',
+            description: 'Comprehensive sensor network providing real-time data on soil conditions, plant health, and environmental factors.'
+          }
+        ]
+      }
     },
-    {
-      icon: <CloudRain className="w-8 h-8 text-green-400" />,
-      title: "Weather Monitoring",
-      description: "Real-time weather tracking and predictive analytics to optimize farming operations and protect crops from adverse conditions."
+    fr: {
+      nav: {
+        home: 'Accueil',
+        about: 'À propos',
+        solutions: 'Solutions',
+        products: 'Produits',
+        services: 'Services',
+        industries: 'Industries',
+        innovation: 'Innovation',
+        contact: 'Contact'
+      },
+      solutions: {
+        title: 'Nos Solutions Intelligentes',
+        subtitle: 'Solutions IoT innovantes pour une agriculture moderne',
+        solutions: [
+          {
+            title: 'Systèmes d\'irrigation intelligents',
+            description: 'Solutions d\'arrosage automatisé qui s\'adaptent en fonction de l\'humidité du sol et des prévisions météorologiques, réduisant la consommation d\'eau jusqu\'à 40%.'
+          },
+          {
+            title: 'Surveillance Météorologique',
+            description: 'Suivi météorologique en temps réel et analyses prédictives pour optimiser les opérations agricoles et protéger les cultures des conditions défavorables.'
+          },
+          {
+            title: 'Réseau de Capteurs IoT',
+            description: 'Réseau complet de capteurs fournissant des données en temps réel sur l\'état du sol, la santé des plantes et les facteurs environnementaux.'
+          }
+        ]
+      }
     },
-    {
-      icon: <Wifi className="w-8 h-8 text-green-400" />,
-      title: "IoT Sensors Network",
-      description: "Comprehensive sensor network providing real-time data on soil conditions, plant health, and environmental factors."
-    },
-    {
-      icon: <Settings className="w-8 h-8 text-green-400" />,
-      title: "Automated Control Systems",
-      description: "Remote monitoring and control of agricultural equipment and environmental conditions for optimal growth."
+    ar: {
+      nav: {
+        home: 'الرئيسية',
+        about: 'من نحن',
+        solutions: 'الحلول',
+        products: 'المنتجات',
+        services: 'الخدمات',
+        industries: 'الصناعات',
+        innovation: 'الابتكار',
+        contact: 'اتصل بنا'
+      },
+      solutions: {
+        title: 'حلولنا الذكية',
+        subtitle: 'حلول إنترنت الأشياء المبتكرة للزراعة الحديثة',
+        solutions: [
+          {
+            title: 'أنظمة الري الذكية',
+            description: 'حلول ري أوتوماتيكية تتكيف مع مستويات رطوبة التربة وتوقعات الطقس، مما يقلل من استهلاك المياه بنسبة تصل إلى 40٪.'
+          },
+          {
+            title: 'مراقبة الطقس',
+            description: 'تتبع الطقس في الوقت الفعلي والتحليلات التنبؤية لتحسين العمليات الزراعية وحماية المحاصيل من الظروف غير المواتية.'
+          },
+          {
+            title: 'شبكة أجهزة استشعار إنترنت الأشياء',
+            description: 'شبكة شاملة من أجهزة الاستشعار التي توفر بيانات في الوقت الفعلي عن ظروف التربة وصحة النباتات والعوامل البيئية.'
+          }
+        ]
+      }
     }
-  ];
+  };
 
+  const t = translations[currentLang].solutions;
+
+  const solutions = t.solutions.map((solution, index) => ({
+    icon: [
+      <Droplets key="irrigation" className="w-8 h-8 text-green-400" />,
+      <CloudRain key="weather" className="w-8 h-8 text-green-400" />,
+      <Wifi key="iot" className="w-8 h-8 text-green-400" />,
+      <Settings key="control" className="w-8 h-8 text-green-400" />
+    ][index],
+    title: solution.title,
+    description: solution.description
+  }));
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 transition-all duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <button 
-          onClick={() => navigate(-1)}
-          className="flex items-center text-slate-300 hover:text-green-400 mb-8 transition-colors duration-200"
-        >
-          <ArrowRight className="w-5 h-5 mr-2 rotate-180" />
-          <span>Back</span>
-        </button>
+    <div className="min-h-screen bg-slate-900 text-white">
+      <Header
+        currentLang={currentLang}
+        setCurrentLang={setCurrentLang}
+        translations={translations}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+      />
+      <div className="pt-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
 
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -123,7 +206,7 @@ const SolutionsPage = () => {
                 <h4 className="text-xl font-semibold text-white mb-3">Ready to transform your farm?</h4>
                 <p className="text-slate-300 mb-4">Contact our team of experts to learn how our solutions can be customized for your specific needs.</p>
                 <button 
-                  onClick={() => navigate('/contact')}
+                  onClick={() => window.location.href = '/contact'}
                   className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 px-6 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center gap-2"
                 >
                   Get in Touch
@@ -133,6 +216,7 @@ const SolutionsPage = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

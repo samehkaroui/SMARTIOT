@@ -1,11 +1,75 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Mail, Phone, MapPin, Send, ArrowLeft } from 'lucide-react';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import Header, { Translations as HeaderTranslations } from './Header';
 
-// Remove unused translation prop since we're not using translations in this component
-const Contact = () => {
-  const navigate = useNavigate();
+interface ContactTranslations {
+  title: string;
+  description: string;
+  startBtn: string;
+  consultBtn: string;
+  form: {
+    name: string;
+    email: string;
+    phone: string;
+    company: string;
+    message: string;
+    submit: string;
+  };
+  info: {
+    address: string;
+    phone: string;
+    email: string;
+    hours: string;
+  };
+}
+
+interface ContactProps {
+  translations: {
+    en: HeaderTranslations & { contact: ContactTranslations };
+    fr: HeaderTranslations & { contact: ContactTranslations };
+    ar: HeaderTranslations & { contact: ContactTranslations };
+  };
+  currentLang: 'en' | 'fr' | 'ar';
+  setCurrentLang: (lang: 'en' | 'fr' | 'ar') => void;
+  isMenuOpen: boolean;
+  setIsMenuOpen: (isOpen: boolean) => void;
+}
+
+const Contact = ({
+  translations,
+  currentLang,
+  setCurrentLang,
+  isMenuOpen,
+  setIsMenuOpen
+}: ContactProps) => {
   const [isMounted, setIsMounted] = useState(false);
+  
+  // Get translations with fallbacks
+  const t = {
+    title: translations[currentLang]?.contact?.title || 'Contact Us',
+    description: translations[currentLang]?.contact?.description || 'Have questions or want to learn more about our solutions? Get in touch with our team.',
+    successMessage: 'Your message has been sent successfully!', // Not in translations, using fallback
+    errorMessage: 'An error occurred while sending your message. Please try again.', // Not in translations, using fallback
+    sending: 'Sending...',
+    optional: '(Optional)',
+    form: {
+      title: 'Send Us a Message',
+      name: translations[currentLang]?.contact?.form?.name || 'Full Name',
+      email: translations[currentLang]?.contact?.form?.email || 'Email',
+      phone: translations[currentLang]?.contact?.form?.phone || 'Phone',
+      message: translations[currentLang]?.contact?.form?.message || 'Message',
+      submit: translations[currentLang]?.contact?.form?.submit || 'Send Message',
+    },
+    info: {
+      title: 'Contact Information',
+      email: 'Email Us',
+      phone: 'Call Us',
+      address: translations[currentLang]?.contact?.info?.address || '123 Tech Park, Silicon Valley, CA 94025',
+      emailValue: translations[currentLang]?.contact?.info?.email || 'info@riotsysagro.com',
+      phoneValue: translations[currentLang]?.contact?.info?.phone || '+1 (555) 123-4567',
+      hours: translations[currentLang]?.contact?.info?.hours || 'Mon-Fri: 9:00 AM - 6:00 PM'
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -61,16 +125,21 @@ const Contact = () => {
     }
   };
 
+  // Prepare header props - pass through the full translations object
+  const headerProps = {
+    translations,
+    currentLang,
+    setCurrentLang,
+    isMenuOpen,
+    setIsMenuOpen
+  };
+
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-800 to-slate-900 transition-all duration-500 ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
+      <Header {...headerProps} />
+      <div className="pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <button 
-          onClick={() => navigate(-1)}
-          className="flex items-center text-slate-300 hover:text-green-400 mb-8 transition-colors duration-200"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          <span>Back</span>
-        </button>
+        
 
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
@@ -85,36 +154,37 @@ const Contact = () => {
           {/* Contact Information */}
           <div className="space-y-8">
             <div className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-xl border border-slate-700/50">
-              <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
+              <h3 className="text-2xl font-bold text-white mb-6">{t.info.title}</h3>
               
               <div className="space-y-6">
-                <div className="flex items-start">
+                <div className="flex items-center mb-4">
                   <div className="bg-green-400/10 p-3 rounded-lg mr-4">
                     <Mail className="w-6 h-6 text-green-400" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-white">Email Us</h4>
-                    <p className="text-slate-400">info@riotsysagro.com</p>
+                    <h4 className="text-lg font-semibold text-white">{t.info.email}</h4>
+                    <p className="text-slate-400">{t.info.emailValue}</p>
                   </div>
                 </div>
 
-                <div className="flex items-start">
+                <div className="flex items-center mb-4">
                   <div className="bg-green-400/10 p-3 rounded-lg mr-4">
                     <Phone className="w-6 h-6 text-green-400" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-white">Call Us</h4>
-                    <p className="text-slate-400">+1 (555) 123-4567</p>
+                    <h4 className="text-lg font-semibold text-white">{t.info.phone}</h4>
+                    <p className="text-slate-400">{t.info.phoneValue}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="bg-green-400/10 p-3 rounded-lg mr-4">
+                  <div className="bg-green-400/10 p-3 rounded-lg mr-4 mt-1">
                     <MapPin className="w-6 h-6 text-green-400" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-white">Visit Us</h4>
-                    <p className="text-slate-400">123 Tech Park, Silicon Valley, CA 94025</p>
+                    <h4 className="text-lg font-semibold text-white">{t.info.address}</h4>
+                    <p className="text-slate-400">{t.info.address}</p>
+                    <p className="text-slate-500 text-sm mt-1">{t.info.hours}</p>
                   </div>
                 </div>
               </div>
@@ -161,7 +231,7 @@ const Contact = () => {
 
           {/* Contact Form */}
           <div className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-xl border border-slate-700/50">
-            <h3 className="text-2xl font-bold text-white mb-6">Send Us a Message</h3>
+            <h3 className="text-2xl font-bold text-white mb-6">{t.form.title}</h3>
             
             {submitStatus && (
               <div className={`p-4 rounded-lg mb-6 ${
@@ -175,9 +245,7 @@ const Contact = () => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
-                  Full Name <span className="text-red-400">*</span>
-                </label>
+                <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-1">{t.form.name || 'Name'} <span className="text-red-400">*</span></label>
                 <input
                   type="text"
                   id="name"
@@ -186,15 +254,13 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent text-white placeholder-slate-400 transition-all duration-200"
-                  placeholder="John Doe"
+                  placeholder={t.form.name || 'Your name'}
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
-                    Email <span className="text-red-400">*</span>
-                  </label>
+                  <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-1">{t.form.email || 'Email'} <span className="text-red-400">*</span></label>
                   <input
                     type="email"
                     id="email"
@@ -203,14 +269,12 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent text-white placeholder-slate-400 transition-all duration-200"
-                    placeholder="your.email@example.com"
+                    placeholder={t.form.email || 'your.email@example.com'}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-slate-300 mb-2">
-                    Phone Number
-                  </label>
+                  <label htmlFor="phone" className="block text-sm font-medium text-slate-300 mb-1">{t.form.phone || 'Phone'} {t.optional || '(Optional)'}</label>
                   <input
                     type="tel"
                     id="phone"
@@ -218,15 +282,13 @@ const Contact = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent text-white placeholder-slate-400 transition-all duration-200"
-                    placeholder="+1 (555) 123-4567"
+                    placeholder={t.form.phone || '+1 (555) 123-4567'}
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
-                  Message <span className="text-red-400">*</span>
-                </label>
+                <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-1">{t.form.message || 'Message'} <span className="text-red-400">*</span></label>
                 <textarea
                   id="message"
                   name="message"
@@ -235,7 +297,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent text-white placeholder-slate-400 transition-all duration-200 resize-none"
-                  placeholder="How can we help you?"
+                  placeholder={t.form.message || 'Your message here...'}
                 ></textarea>
               </div>
 
@@ -250,7 +312,7 @@ const Contact = () => {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    <span>Sending...</span>
+                    <span>{t.sending || 'Sending...'}</span>
                   </>
                 ) : (
                   <>
@@ -262,6 +324,7 @@ const Contact = () => {
             </form>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

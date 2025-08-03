@@ -1,7 +1,7 @@
 import { Leaf, Menu, X, Languages } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-interface Translations {
+export interface Translations {
   nav: {
     home: string;
     about: string;
@@ -41,14 +41,14 @@ export default function Header({ currentLang, setCurrentLang, translations, isMe
           </div>
           
           <div className="hidden md:flex space-x-8">
-            <a href="#home" className="hover:text-green-400 transition-colors">{t.nav.home}</a>
-            <a href="#about" className="hover:text-green-400 transition-colors">{t.nav.about}</a>
-            <a href="#solutions" className="hover:text-green-400 transition-colors">{t.nav.solutions}</a>
-            <a href="#products" className="hover:text-green-400 transition-colors">{t.nav.products}</a>
-            <a href="#services" className="hover:text-green-400 transition-colors">{t.nav.services}</a>
-            <a href="#industries" className="hover:text-green-400 transition-colors">{t.nav.industries}</a>
-            <Link to="/innovation" className="hover:text-green-400 transition-colors">{t.nav.innovation}</Link>
-            <Link to="/contact" className="hover:text-green-400 transition-colors">{t.nav.contact}</Link>
+            <a href="/#home" className="text-white hover:text-green-400 transition-colors">{t.nav.home}</a>
+            <a href="/#about" className="text-white hover:text-green-400 transition-colors">{t.nav.about}</a>
+            <a href="/#solutions" className="text-white hover:text-green-400 transition-colors">{t.nav.solutions}</a>
+            <a href="/#products" className="text-white hover:text-green-400 transition-colors">{t.nav.products}</a>
+            <a href="/#services" className="text-white hover:text-green-400 transition-colors">{t.nav.services}</a>
+            <a href="/#industries" className="text-white hover:text-green-400 transition-colors">{t.nav.industries}</a>
+            <a href="/innovation" className="text-white hover:text-green-400 transition-colors">{t.nav.innovation}</a>
+            <a href="/contact" className="text-white hover:text-green-400 transition-colors">{t.nav.contact}</a>
           </div>
           
           <div className="flex items-center space-x-4">

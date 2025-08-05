@@ -1,7 +1,7 @@
 // Determine the base URL based on the environment
 const isProduction = process.env.NODE_ENV === 'production';
 const API_BASE_URL = isProduction 
-  ? 'https://your-render-backend-url.onrender.com/api' // Replace with your actual Render backend URL
+  ? 'https://smartiotserver.onrender.com/api' // Replace with your actual Render backend URL
   : '/api';
 
 const API_ENDPOINTS = {

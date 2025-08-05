@@ -41,7 +41,7 @@ let users = [
 // Middleware
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://your-render-app-url.onrender.com', // Replace with your actual Render frontend URL
+  'smartiot-bhmxq323q-samhkaroui-gmailcoms-projects.vercel.app', // Replace with your actual Render frontend URL
   process.env.FRONTEND_URL // Also allow from environment variable
 ].filter(Boolean);
 

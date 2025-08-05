@@ -46,6 +46,26 @@ export const apiService = {
     return handleResponse(response);
   },
 
+  // Contact Form
+  submitContactForm: async (formData) => {
+    try {
+      console.log('Submitting contact form:', formData);
+      const response = await fetch(API_ENDPOINTS.CONTACT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const result = await handleResponse(response);
+      console.log('Contact form submission successful:', result);
+      return result;
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      throw error;
+    }
+  },
+
   // Orders
   submitOrder: async (orderData) => {
     try {
